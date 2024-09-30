@@ -33,10 +33,16 @@
                 <input asp-for="FavoriteLesson" class="control-label"></input>
                 <span asp-validation-for="FavoriteLesson" class="text-danger"></span>
             </div>
+
+            <div>
+                <label asp-for="TeachersPet" class="control-label"></label>
+                <input asp-for="TeachersPet" class="control-label"></input>
+                <span asp-validation-for="TeachersPet" class="text-danger"></span>
+            </div>
             
             <div class="form-group">
                 <label asp-for="InstructorID" class="control-label"></label>
-                <select asp-for="InstructorID" class="form-control" asp-items="ViewBag.InstructorId">
+                <select asp-for="InstructorID" class="form-control" asp-items="ViewBag.InstructorID">
                     <option value="">-- Select Administrator --</option>
                 </select>
                 <span asp-validation-for="InstructorID" class="text-danger"></span>
