@@ -32,8 +32,8 @@ namespace ContosoUniversity.Models
         public OfficeAssignment? OfficeAssignment { get; set; }
 
         //igaühel on oma kolm unikaalset propetyt
-        public int Vanus { get; set; }
-        public Linn Linn { get; set; }
+        public int? Vanus { get; set; }
+        public Linn? Linn { get; set; }
         [Display(Name = "Algne Sugu:")]
         public string? Sugu { get; set; }
     }

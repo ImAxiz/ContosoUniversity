@@ -13,7 +13,7 @@ namespace ContosoUniversity.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
         public async Task<IActionResult> Index(int? id, int? courseId)
         {
             var vm = new InstructorIndexData();
@@ -46,7 +46,7 @@ namespace ContosoUniversity.Controllers
                     .Enrollments;
             }
 
-            return View();
+            return View(vm);
         }
 
         [HttpGet]
