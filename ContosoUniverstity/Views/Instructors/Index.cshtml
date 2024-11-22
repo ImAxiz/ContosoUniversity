@@ -1,4 +1,4 @@
-﻿@model ContosoUniversity.Models.InstructorIndexData
+﻿@model ContosoUniversity.Models.Instructor
 
 @{
     ViewData["Title"] = "Instructors";
@@ -21,7 +21,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Instructors)
+        @foreach (var item in Model.Instructor)
         {
             string selectedRow = "";
             if (item.ID == (int?)ViewData["InstructorID"])

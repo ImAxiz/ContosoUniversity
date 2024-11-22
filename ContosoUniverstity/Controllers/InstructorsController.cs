@@ -82,7 +82,7 @@ namespace ContosoUniversity.Controllers
                 return RedirectToAction("Index");
             }
             //PopulateAssignedCourseData(instructor); //uuendab instructori juures olevaid kursuseid
-            return View();
+            return View(instructor);
         }
 
         private void PopulateAssignedCourseData(Instructor instructor)
@@ -101,6 +101,18 @@ namespace ContosoUniversity.Controllers
                 });
             }
             ViewData["Courses"] = vm;
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var instructor = await _context.Instructors.FindAsync(id);
+
+            _context.Instructors.Remove(instructor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
