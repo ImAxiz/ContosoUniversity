@@ -192,7 +192,32 @@ namespace ContosoUniversity.Controllers
             return View(student);
         }
 
+        private bool StudentExists(int id)
+        {
+            throw new NotImplementedException();
+        }
 
+        public async Task<IActionResult> Clone(int id)
+        {
+            var student = await _context.Students.FindAsync(id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var ClonedStudent = new Student
+            {
+                LastName = student.LastName,
+                FirstMidName = student.FirstMidName,
+                EnrollmentDate = student.EnrollmentDate,
+            };
+
+            _context.Students.Add(ClonedStudent);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
     }
