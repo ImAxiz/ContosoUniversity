@@ -31,7 +31,7 @@ namespace ContosoUniversity.Controllers
 
             if (id != null)
             {
-                ViewData["InstructorID"] = id.Value;
+                ViewData["InstructorId"] = id.Value;
                 Instructor instructor = vm.Instructors
                     .Where(i => i.ID == id.Value).Single();
                 vm.Courses = instructor.CourseAssignments
@@ -47,6 +47,7 @@ namespace ContosoUniversity.Controllers
             }
 
             return View(vm);
+
         }
 
         [HttpGet]
@@ -61,46 +62,46 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Instructor instructor)
         {
-            /*if (selectedCourses == null)
+            /*if (selectedCourse == null)
             {
                 instructor.CourseAssignments = new List<CourseAssignment>();
-                foreach (var course in selectedCourses)
+                foreach (var course in selectedCourse)
                 {
                     var courseToAdd = new CourseAssignment
                     {
-                        InstructorID = instructor.ID,
-                        CourseID = course
+                        Instructor = instructor,
+                        Course = course
                     };
                     instructor.CourseAssignments.Add(courseToAdd);
                 }
             }*/
-            //ModelState.Remove(selectedCourses);
+            //ModelState.Remove(selectedCourse);
             if (ModelState.IsValid)
             {
                 _context.Add(instructor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            //PopulateAssignedCourseData(instructor); //uuendab instructori juures olevaid kursuseid
+            //PopulateAssignedCourseData(instructor);
             return View(instructor);
         }
 
-        private void PopulateAssignedCourseData(Instructor instructor)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var allCourses = _context.Courses; //leiame kõik kursused
-            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseID));
-            //valime kursused kus courseid on õpetajal olemas
-            var vm = new List<AssignedCourseData>(); //teeme viewmodeli jaoks uue nimekirja
-            foreach (var course in allCourses)
+            if (id == null)
             {
-                vm.Add(new AssignedCourseData
-                {
-                    CourseID = course.CourseID,
-                    Title = course.Title,
-                    Assigned = instructorCourses.Contains(course.CourseID)
-                });
+                return NotFound();
             }
-            ViewData["Courses"] = vm;
+
+            var instructor = await _context.Instructors
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            return View(instructor);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -113,6 +114,81 @@ namespace ContosoUniversity.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var instructor = await _context.Instructors.FindAsync(id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+            return View(instructor);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Instructor instructor)
+        {
+            if (id != instructor.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(instructor);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Instructor(instructor.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(instructor);
+        }
+
+        private bool Instructor(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IActionResult> Clone(int id)
+        {
+            var instructor = await _context.Instructors.FindAsync(id);
+
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            var ClonedInstructor = new Instructor
+            {
+                LastName = instructor.LastName,
+                FirstMidName = instructor.FirstMidName,
+                HireDate = instructor.HireDate,
+                OfficeAssignment = instructor.OfficeAssignment,
+            };
+
+            _context.Instructors.Add(ClonedInstructor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }
