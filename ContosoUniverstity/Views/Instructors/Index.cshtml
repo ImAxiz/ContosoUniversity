@@ -15,8 +15,6 @@
             <th>Hire Date</th>
             <th>Office Location</th>
             <th>Courses</th>
-            <th>Birthday</th>
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -41,9 +39,6 @@
                         @courses.Course.Title <br />
                     }
                 </td>
-
-                <td>@Html.DisplayFor(modelItem => item.Birthday)</td>
-
                 <td>
                     <a class="btn btn-primary btn-sm m-1" asp-action="Edit" asp-route-id="@item.ID">Edit</a>
                     <a class="btn btn-danger btn-sm m-1" asp-action="Delete" asp-route-id="@item.ID">Delete</a>

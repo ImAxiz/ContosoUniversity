@@ -36,20 +36,5 @@ namespace ContosoUniversity.Models
         public ICollection<CourseAssignment>? CourseAssignments { get; set; }
 
         public OfficeAssignment? OfficeAssignment { get; set; }
-
-        //Igaühel on oma kolm  unikaalset propertyt
-
-        public int? Birthday { get; set; }
-
-        public int? WorkYears { get; set; }
-
-        [Display(Name = "Nicotine #:")]
-        public NicotineNeeded? NicotineNeeded { get; set; }
-
-    }
-
-    public enum NicotineNeeded
-    {
-        EveryHour, EveryMinute, EverySecond,
-    }
+    } 
 }
