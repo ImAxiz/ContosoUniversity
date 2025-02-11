@@ -104,7 +104,17 @@ namespace ContosoUniversity.Controllers
             return View(instructor);
         }
 
-       
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var instructor = await _context.Instructors.FindAsync(id);
+
+            _context.Instructors.Remove(instructor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
