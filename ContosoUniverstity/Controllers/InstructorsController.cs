@@ -130,7 +130,37 @@ namespace ContosoUniversity.Controllers
             return View(instructor);
         }
 
- 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Instructor instructor)
+        {
+            if (id != instructor.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(instructor);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Instructor(instructor.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(instructor);
+        }
 
         private bool Instructor(int id)
         {
