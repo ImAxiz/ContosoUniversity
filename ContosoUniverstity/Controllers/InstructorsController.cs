@@ -166,29 +166,5 @@ namespace ContosoUniversity.Controllers
         {
             throw new NotImplementedException();
         }
-
-        public async Task<IActionResult> Clone(int id)
-        {
-            var instructor = await _context.Instructors.FindAsync(id);
-
-            if (instructor == null)
-            {
-                return NotFound();
-            }
-
-            var ClonedInstructor = new Instructor
-            {
-                LastName = instructor.LastName,
-                FirstMidName = instructor.FirstMidName,
-                HireDate = instructor.HireDate,
-                OfficeAssignment = instructor.OfficeAssignment,
-            };
-
-            _context.Instructors.Add(ClonedInstructor);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-
-        }
     }
 }
